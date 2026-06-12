@@ -61,6 +61,8 @@ WorkingDirectory=/opt/tandem
 ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning server.js
 Restart=always
 RestartSec=3
+KillSignal=SIGTERM
+TimeoutStopSec=15
 Environment=NODE_ENV=production
 NoNewPrivileges=true
 PrivateTmp=true
@@ -126,12 +128,11 @@ else
   journalctl -u caddy --no-pager -n 25
 fi
 
-# ежедневный бэкап данных (база + фото), храним 14 дней
+# ежедневный консистентный бэкап (VACUUM INTO + фото), храним 30 дней
+chmod +x /opt/tandem/backup.sh 2>/dev/null || true
 cat > /etc/cron.daily/tandem-backup <<'CRON'
 #!/bin/sh
-mkdir -p /root/tandem-backups
-tar -czf /root/tandem-backups/tandem-$(date +%F).tgz -C /opt/tandem data
-find /root/tandem-backups -name 'tandem-*.tgz' -mtime +14 -delete
+/opt/tandem/backup.sh >/dev/null 2>&1
 CRON
 chmod +x /etc/cron.daily/tandem-backup
 

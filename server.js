@@ -771,6 +771,21 @@ app.use((err, req, res, next) => {
   bad(res, err.message || 'Ошибка сервера', err.status || 500);
 });
 
+/* корректное завершение: сворачиваем WAL в основной файл базы,
+   чтобы рестарт/деплой никогда не оставлял данные «застрявшими» в WAL */
+let shuttingDown = false;
+function shutdown(sig) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  try { db.exec('PRAGMA wal_checkpoint(TRUNCATE)'); } catch {}
+  try { db.close(); } catch {}
+  try { server.close(); } catch {}
+  console.log(`\n${sig}: база сохранена, выходим.`);
+  process.exit(0);
+}
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
 server.listen(PORT, HOST, () => {
   console.log(`🗿 BECOME GIGACHAD — LIVE EDITION: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
   console.log(`   База: ${path.join(DATA, 'tandem.db')}`);

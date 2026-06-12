@@ -700,11 +700,13 @@ const RARITY = {
 const ACH_EMOJIS = ['🏆', '💪', '🏃', '📚', '🧠', '💼', '🥦', '💧', '😴', '🧹', '💸', '🎯', '⛏', '🗿', '🔥', '🚀'];
 
 function achIconHtml(icon) {
-  if (icon && icon.startsWith('px:') && window.MC_ICONS) {
+  if (!icon) return '🏆';
+  if (icon.startsWith('px:') && window.MC_ICONS) {
     const i = MC_ICONS[Number(icon.slice(3))];
     if (i) return `<img src="${i.data}" alt="">`;
   }
-  return esc(icon || '🏆');
+  if (/^data:image\//.test(icon)) return `<img src="${icon.replace(/"/g, '%22')}" alt="">`; // кастомная картинка (импорт из Achievements)
+  return esc(icon);
 }
 const achById = (id) => (state.achs || []).find((a) => a.id === id);
 const achDone = (a) => (a.daily ? a.done_date === todayLocal() : !!a.done_at);
