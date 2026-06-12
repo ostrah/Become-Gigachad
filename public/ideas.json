@@ -1,0 +1,1002 @@
+[
+  {
+    "title": "Первый рывок",
+    "description": "Сделай первую утреннюю зарядку после пробуждения.",
+    "category": "спорт и здоровье",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel rising sun with dumbbell"
+  },
+  {
+    "title": "Шаг за шагом",
+    "description": "Пройди 10 000 шагов за день.",
+    "category": "спорт и здоровье",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel sneaker footprint"
+  },
+  {
+    "title": "Вода жизни",
+    "description": "Выпей 2 литра воды за день.",
+    "category": "спорт и здоровье",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel water bottle"
+  },
+  {
+    "title": "Железный график",
+    "description": "Сходи в спортзал 12 раз за месяц.",
+    "category": "спорт и здоровье",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 12,
+    "daily": false,
+    "icon_idea": "pixel barbell"
+  },
+  {
+    "title": "Сотня",
+    "description": "Сделай 100 отжиманий за один день.",
+    "category": "спорт и здоровье",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 100,
+    "daily": false,
+    "icon_idea": "pixel arm flexing muscle"
+  },
+  {
+    "title": "Планка-герой",
+    "description": "Простой в планке 3 минуты без остановки.",
+    "category": "спорт и здоровье",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel person in plank pose"
+  },
+  {
+    "title": "Десять кило",
+    "description": "Сбрось 10 килограммов веса.",
+    "category": "спорт и здоровье",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 10,
+    "daily": false,
+    "icon_idea": "pixel scale with downward arrow"
+  },
+  {
+    "title": "42 километра",
+    "description": "Пробеги полный марафон от старта до финиша.",
+    "category": "спорт и здоровье",
+    "difficulty": "legendary",
+    "xp": 250,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel runner crossing finish line"
+  },
+  {
+    "title": "Заплыв",
+    "description": "Проплыви 1 километр в бассейне за тренировку.",
+    "category": "спорт и здоровье",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel swimmer in water"
+  },
+  {
+    "title": "Дзен на коврике",
+    "description": "Сделай растяжку или йогу 20 дней подряд.",
+    "category": "спорт и здоровье",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 20,
+    "daily": true,
+    "icon_idea": "pixel yoga mat lotus pose"
+  },
+  {
+    "title": "Сон чемпиона",
+    "description": "Спи не меньше 8 часов 7 ночей подряд.",
+    "category": "спорт и здоровье",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 7,
+    "daily": true,
+    "icon_idea": "pixel bed with moon"
+  },
+  {
+    "title": "Книжный червь",
+    "description": "Читай хотя бы 20 минут каждый день.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel open book"
+  },
+  {
+    "title": "Библиотека года",
+    "description": "Прочитай 12 книг за год.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 12,
+    "daily": false,
+    "icon_idea": "pixel stack of books"
+  },
+  {
+    "title": "Полиглот",
+    "description": "Достигни уровня B2 в иностранном языке.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "legendary",
+    "xp": 250,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel speech bubbles with flags"
+  },
+  {
+    "title": "Слово дня",
+    "description": "Выучи 50 новых иностранных слов.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 50,
+    "daily": false,
+    "icon_idea": "pixel dictionary with letter A"
+  },
+  {
+    "title": "Код-воин",
+    "description": "Реши 30 задач по программированию.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 30,
+    "daily": false,
+    "icon_idea": "pixel laptop with code brackets"
+  },
+  {
+    "title": "Дипломированный",
+    "description": "Пройди онлайн-курс до конца и получи сертификат.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel diploma scroll"
+  },
+  {
+    "title": "Утренние страницы",
+    "description": "Веди дневник или заметки 14 дней подряд.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 14,
+    "daily": true,
+    "icon_idea": "pixel notebook with pen"
+  },
+  {
+    "title": "Подкаст-академия",
+    "description": "Прослушай 25 образовательных подкастов.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 25,
+    "daily": false,
+    "icon_idea": "pixel headphones with microphone"
+  },
+  {
+    "title": "Мастер навыка",
+    "description": "Доведи новый навык до уверенного уровня за 50 практик.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 50,
+    "daily": false,
+    "icon_idea": "pixel glowing skill star"
+  },
+  {
+    "title": "Мастер конспекта",
+    "description": "Сделай конспект по новой большой теме.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel notes with highlighter"
+  },
+  {
+    "title": "Оратор",
+    "description": "Выступи с публичным докладом или презентацией.",
+    "category": "учёба и саморазвитие",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel podium microphone"
+  },
+  {
+    "title": "Inbox Zero",
+    "description": "Разбери всю рабочую почту до нуля писем.",
+    "category": "работа и финансы",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel empty email tray"
+  },
+  {
+    "title": "Помидорный спринт",
+    "description": "Отработай 8 помодоро-сессий за день.",
+    "category": "работа и финансы",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 8,
+    "daily": true,
+    "icon_idea": "pixel tomato timer"
+  },
+  {
+    "title": "Первая копилка",
+    "description": "Заведи и пополни накопительный счёт.",
+    "category": "работа и финансы",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel piggy bank"
+  },
+  {
+    "title": "Подушка безопасности",
+    "description": "Накопи финансовую подушку на 6 месяцев жизни.",
+    "category": "работа и финансы",
+    "difficulty": "legendary",
+    "xp": 250,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel safe vault with coins"
+  },
+  {
+    "title": "Бюджет под контролем",
+    "description": "Веди учёт всех трат 30 дней подряд.",
+    "category": "работа и финансы",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 30,
+    "daily": true,
+    "icon_idea": "pixel ledger with coin"
+  },
+  {
+    "title": "Прибавка",
+    "description": "Договорись о повышении зарплаты или дохода.",
+    "category": "работа и финансы",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel coin stack with up arrow"
+  },
+  {
+    "title": "Сторонний доход",
+    "description": "Заработай первые деньги на подработке или проекте.",
+    "category": "работа и финансы",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel briefcase with coin"
+  },
+  {
+    "title": "Инвестор",
+    "description": "Сделай свою первую инвестицию.",
+    "category": "работа и финансы",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel growth chart arrow"
+  },
+  {
+    "title": "Минус долги",
+    "description": "Полностью закрой кредит или долг.",
+    "category": "работа и финансы",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel broken chain"
+  },
+  {
+    "title": "Глубокая работа",
+    "description": "Поработай 2 часа без отвлечений в фокусе.",
+    "category": "работа и финансы",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel brain with focus target"
+  },
+  {
+    "title": "Список дел",
+    "description": "Закрой все задачи из дневного списка дел.",
+    "category": "работа и финансы",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel checklist all ticked"
+  },
+  {
+    "title": "Свой проект",
+    "description": "Запусти собственный проект или продукт в мир.",
+    "category": "работа и финансы",
+    "difficulty": "legendary",
+    "xp": 250,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel rocket launch"
+  },
+  {
+    "title": "Заправлен и готов",
+    "description": "Заправь постель сразу после пробуждения.",
+    "category": "быт и дисциплина",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel neatly made bed"
+  },
+  {
+    "title": "Чистая раковина",
+    "description": "Помой всю посуду и оставь раковину пустой.",
+    "category": "быт и дисциплина",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel clean sink with sparkle"
+  },
+  {
+    "title": "Генеральная уборка",
+    "description": "Проведи большую уборку всей квартиры.",
+    "category": "быт и дисциплина",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel broom and bucket"
+  },
+  {
+    "title": "Минус хлам",
+    "description": "Избавься от 50 ненужных вещей.",
+    "category": "быт и дисциплина",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 50,
+    "daily": false,
+    "icon_idea": "pixel cardboard box with items"
+  },
+  {
+    "title": "Ранняя пташка",
+    "description": "Вставай в 6 утра 21 день подряд.",
+    "category": "быт и дисциплина",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 21,
+    "daily": true,
+    "icon_idea": "pixel alarm clock with sunrise"
+  },
+  {
+    "title": "Без откладывания",
+    "description": "Сделай самое неприятное дело первым с утра.",
+    "category": "быт и дисциплина",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel frog mascot"
+  },
+  {
+    "title": "Готовлю сам",
+    "description": "Приготовь домашний ужин вместо доставки.",
+    "category": "быт и дисциплина",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel frying pan with egg"
+  },
+  {
+    "title": "Мастер на час",
+    "description": "Почини или собери что-то своими руками.",
+    "category": "быт и дисциплина",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel wrench and screwdriver"
+  },
+  {
+    "title": "Идеальная неделя",
+    "description": "Выполни все ежедневные привычки 7 дней подряд.",
+    "category": "быт и дисциплина",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 7,
+    "daily": false,
+    "icon_idea": "pixel calendar with seven checks"
+  },
+  {
+    "title": "Железная дисциплина",
+    "description": "Удержи все базовые привычки 60 дней подряд.",
+    "category": "быт и дисциплина",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 60,
+    "daily": false,
+    "icon_idea": "pixel iron shield with checkmark"
+  },
+  {
+    "title": "Первый аккорд",
+    "description": "Выучи и сыграй первую мелодию на инструменте.",
+    "category": "хобби и творчество",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel acoustic guitar"
+  },
+  {
+    "title": "Музыкант",
+    "description": "Занимайся на инструменте 30 дней подряд.",
+    "category": "хобби и творчество",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 30,
+    "daily": true,
+    "icon_idea": "pixel piano keys with note"
+  },
+  {
+    "title": "Кистью по холсту",
+    "description": "Напиши большую картину на холсте от наброска до финала.",
+    "category": "хобби и творчество",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel paint palette and brush"
+  },
+  {
+    "title": "Inktober",
+    "description": "Рисуй по одному рисунку каждый день месяц.",
+    "category": "хобби и творчество",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 30,
+    "daily": true,
+    "icon_idea": "pixel ink pen drawing"
+  },
+  {
+    "title": "Писатель",
+    "description": "Напиши рассказ или статью от начала до конца.",
+    "category": "хобби и творчество",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel typewriter"
+  },
+  {
+    "title": "Свой роман",
+    "description": "Допиши книгу или роман на 50 000 слов.",
+    "category": "хобби и творчество",
+    "difficulty": "legendary",
+    "xp": 250,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel finished manuscript book"
+  },
+  {
+    "title": "Кадр дня",
+    "description": "Сними и собери фотосерию из 30 художественных кадров.",
+    "category": "хобби и творчество",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 30,
+    "daily": false,
+    "icon_idea": "pixel camera with flash"
+  },
+  {
+    "title": "Шеф-кондитер",
+    "description": "Испеки сложный десерт или торт с нуля.",
+    "category": "хобби и творчество",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel layered cake"
+  },
+  {
+    "title": "Зелёный палец",
+    "description": "Вырасти растение из семечка до ростка.",
+    "category": "хобби и творчество",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel potted sprout"
+  },
+  {
+    "title": "Своя игра",
+    "description": "Собери и сыграй в настолку с друзьями.",
+    "category": "хобби и творчество",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel dice and board"
+  },
+  {
+    "title": "Монтажёр",
+    "description": "Смонтируй и выложи собственное видео.",
+    "category": "хобби и творчество",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel film clapperboard"
+  },
+  {
+    "title": "Первый звонок",
+    "description": "Позвони родителям или близким просто так.",
+    "category": "социальное и отношения",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel phone with heart"
+  },
+  {
+    "title": "Доброе дело",
+    "description": "Соверши случайный добрый поступок незнакомцу.",
+    "category": "социальное и отношения",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel hands giving heart"
+  },
+  {
+    "title": "Старый друг",
+    "description": "Встреться вживую с другом, которого давно не видел.",
+    "category": "социальное и отношения",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel two people high five"
+  },
+  {
+    "title": "Новое знакомство",
+    "description": "Познакомься и заведи разговор с новым человеком.",
+    "category": "социальное и отношения",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel handshake"
+  },
+  {
+    "title": "Благодарность",
+    "description": "Искренне поблагодари 5 важных тебе людей.",
+    "category": "социальное и отношения",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 5,
+    "daily": false,
+    "icon_idea": "pixel thank you letter"
+  },
+  {
+    "title": "Волонтёр",
+    "description": "Поучаствуй в волонтёрском или благотворительном деле.",
+    "category": "социальное и отношения",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel helping hands heart"
+  },
+  {
+    "title": "Свидание мечты",
+    "description": "Организуй большое незабываемое свидание-сюрприз с продуманным сценарием.",
+    "category": "социальное и отношения",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel candlelit dinner"
+  },
+  {
+    "title": "Душа компании",
+    "description": "Организуй вечеринку или встречу друзей.",
+    "category": "социальное и отношения",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel party confetti"
+  },
+  {
+    "title": "Письмо от руки",
+    "description": "Напиши и отправь 5 бумажных писем или открыток близким.",
+    "category": "социальное и отношения",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 5,
+    "daily": false,
+    "icon_idea": "pixel envelope with stamp"
+  },
+  {
+    "title": "Наставник",
+    "description": "Помоги кому-то освоить новый навык.",
+    "category": "социальное и отношения",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel teacher pointing board"
+  },
+  {
+    "title": "Первый поход",
+    "description": "Сходи в однодневный поход на природу.",
+    "category": "путешествия и приключения",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel hiking backpack"
+  },
+  {
+    "title": "Покоритель вершины",
+    "description": "Поднимись на гору или высокий холм пешком.",
+    "category": "путешествия и приключения",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel mountain peak flag"
+  },
+  {
+    "title": "Ночь под звёздами",
+    "description": "Переночуй в палатке на природе.",
+    "category": "путешествия и приключения",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel tent under stars"
+  },
+  {
+    "title": "Новый город",
+    "description": "Посети город, в котором никогда не был.",
+    "category": "путешествия и приключения",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel city skyline map pin"
+  },
+  {
+    "title": "Загранпаспорт в дело",
+    "description": "Съезди в другую страну.",
+    "category": "путешествия и приключения",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel passport with airplane"
+  },
+  {
+    "title": "Кругосветный мечтатель",
+    "description": "Побывай в 10 разных странах.",
+    "category": "путешествия и приключения",
+    "difficulty": "legendary",
+    "xp": 250,
+    "target": 10,
+    "daily": false,
+    "icon_idea": "pixel globe with pins"
+  },
+  {
+    "title": "Велопутешествие",
+    "description": "Проедь 50 километров на велосипеде за день.",
+    "category": "путешествия и приключения",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel bicycle on road"
+  },
+  {
+    "title": "Закат у воды",
+    "description": "Встреть рассвет или закат на берегу.",
+    "category": "путешествия и приключения",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel sunset over sea"
+  },
+  {
+    "title": "Дикий гурман",
+    "description": "Попробуй 15 новых блюд кухонь разных стран.",
+    "category": "путешествия и приключения",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 15,
+    "daily": false,
+    "icon_idea": "pixel exotic dish plate"
+  },
+  {
+    "title": "Адреналин",
+    "description": "Испытай что-то экстремальное: прыжок, сплав или скалодром.",
+    "category": "путешествия и приключения",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel parachute jump"
+  },
+  {
+    "title": "Спонтанная поездка",
+    "description": "Соберись и уедь куда-нибудь без долгого плана.",
+    "category": "путешествия и приключения",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel car with luggage"
+  },
+  {
+    "title": "День без сигарет",
+    "description": "Продержись целый день без курения.",
+    "category": "вредные привычки",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel crossed-out cigarette"
+  },
+  {
+    "title": "Чистые лёгкие",
+    "description": "Не кури 30 дней подряд.",
+    "category": "вредные привычки",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 30,
+    "daily": true,
+    "icon_idea": "pixel healthy lungs"
+  },
+  {
+    "title": "Бросил навсегда",
+    "description": "Продержись без курения целый год.",
+    "category": "вредные привычки",
+    "difficulty": "legendary",
+    "xp": 250,
+    "target": 365,
+    "daily": true,
+    "icon_idea": "pixel broken cigarette with trophy"
+  },
+  {
+    "title": "Трезвый месяц",
+    "description": "Не пей алкоголь 30 дней подряд.",
+    "category": "вредные привычки",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 30,
+    "daily": true,
+    "icon_idea": "pixel crossed-out beer mug"
+  },
+  {
+    "title": "Сахарный детокс",
+    "description": "Откажись от сладкого на 7 дней.",
+    "category": "вредные привычки",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 7,
+    "daily": true,
+    "icon_idea": "pixel crossed-out candy"
+  },
+  {
+    "title": "Цифровой детокс",
+    "description": "Не заходи в соцсети целый день.",
+    "category": "вредные привычки",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel phone with no-signal cross"
+  },
+  {
+    "title": "Меньше фастфуда",
+    "description": "Не ешь фастфуд 14 дней подряд.",
+    "category": "вредные привычки",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 14,
+    "daily": true,
+    "icon_idea": "pixel crossed-out burger"
+  },
+  {
+    "title": "Без прокрастинации",
+    "description": "Проведи день без бессмысленного скролла лент.",
+    "category": "вредные привычки",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel hand pushing away phone"
+  },
+  {
+    "title": "Утро без телефона",
+    "description": "Не бери телефон первый час после пробуждения.",
+    "category": "вредные привычки",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel phone face down with sun"
+  },
+  {
+    "title": "Меньше кофе",
+    "description": "Сократи кофе до одной чашки в день на неделю.",
+    "category": "вредные привычки",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 7,
+    "daily": true,
+    "icon_idea": "pixel single coffee cup"
+  },
+  {
+    "title": "Дуэль отжиманий",
+    "description": "Вызови друга на дуэль: кто сделает больше отжиманий.",
+    "category": "весёлые/челлендж",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel two arms wrestling"
+  },
+  {
+    "title": "Антон против Ильи",
+    "description": "Победи друга в любом честном споре-челлендже.",
+    "category": "весёлые/челлендж",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel versus lightning split"
+  },
+  {
+    "title": "Слабо?",
+    "description": "Выполни любое 'слабо', придуманное другом.",
+    "category": "весёлые/челлендж",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel pointing finger dare"
+  },
+  {
+    "title": "Гонка привычек",
+    "description": "Обгони друга по стрику ежедневных привычек за неделю.",
+    "category": "весёлые/челлендж",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 7,
+    "daily": false,
+    "icon_idea": "pixel two runners racing"
+  },
+  {
+    "title": "Молчаливый час",
+    "description": "Проведите час вместе, общаясь только жестами.",
+    "category": "весёлые/челлендж",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel zipped mouth emoji"
+  },
+  {
+    "title": "Ставка на цель",
+    "description": "Заключи пари с другом на достижение большой цели.",
+    "category": "весёлые/челлендж",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel handshake with coin"
+  },
+  {
+    "title": "Фант от друга",
+    "description": "Выполни смешное задание, которое назначил тебе друг.",
+    "category": "весёлые/челлендж",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel jester hat"
+  },
+  {
+    "title": "Двойной комбо",
+    "description": "Закройте с другом одну и ту же ачивку в один день.",
+    "category": "весёлые/челлендж",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel two trophies linked"
+  },
+  {
+    "title": "Король недели",
+    "description": "Набери за неделю больше XP, чем друг.",
+    "category": "весёлые/челлендж",
+    "difficulty": "rare",
+    "xp": 50,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel crown with star"
+  },
+  {
+    "title": "Эпичный спор",
+    "description": "Выиграй месячный челлендж против друга по очкам.",
+    "category": "весёлые/челлендж",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel golden trophy crossed swords"
+  },
+  {
+    "title": "Селфи-квест",
+    "description": "Сделай дурацкое селфи на тему, заданную другом.",
+    "category": "весёлые/челлендж",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel smartphone selfie face"
+  },
+  {
+    "title": "Кулинарный поединок",
+    "description": "Приготовьте одно блюдо и решите, у кого вкуснее.",
+    "category": "весёлые/челлендж",
+    "difficulty": "uncommon",
+    "xp": 25,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel chef hat versus fork"
+  },
+  {
+    "title": "Легенда сезона",
+    "description": "Завершите трёхмесячный совместный челлендж до конца.",
+    "category": "весёлые/челлендж",
+    "difficulty": "epic",
+    "xp": 100,
+    "target": 1,
+    "daily": false,
+    "icon_idea": "pixel medal with ribbon glow"
+  },
+  {
+    "title": "Зарядка вдвоём",
+    "description": "Сделайте утреннюю зарядку по видеосвязи вместе.",
+    "category": "весёлые/челлендж",
+    "difficulty": "common",
+    "xp": 10,
+    "target": 1,
+    "daily": true,
+    "icon_idea": "pixel two figures stretching"
+  }
+]

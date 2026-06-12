@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#151311">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GIGACHAD">
+  <title>BECOME GIGACHAD — LIVE EDITION</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Экран входа -->
+  <div id="authScreen" hidden>
+    <div class="auth-box">
+      <div class="auth-logo">🗿</div>
+      <h1>BECOME GIGACHAD</h1>
+      <p class="splash">— LIVE EDITION —</p>
+
+      <div class="auth-tabs">
+        <button id="tabLogin" class="active">Вход</button>
+        <button id="tabRegister">Регистрация</button>
+      </div>
+
+      <form id="loginForm">
+        <input name="username" placeholder="Логин" autocomplete="username" required>
+        <input name="password" type="password" placeholder="Пароль" autocomplete="current-password" required>
+        <button type="submit" class="btn-primary">Войти</button>
+      </form>
+
+      <form id="registerForm" hidden>
+        <input name="name" placeholder="Имя (видно другу)" maxlength="30" required>
+        <div class="emoji-row" id="emojiRow"></div>
+        <input name="username" placeholder="Логин (латиница)" autocomplete="username" required>
+        <input name="password" type="password" placeholder="Пароль" autocomplete="new-password" required>
+        <input name="invite" placeholder="Код приглашения" hidden>
+        <button type="submit" class="btn-primary">Создать аккаунт</button>
+      </form>
+
+      <p id="authError" class="auth-error"></p>
+      <p id="regClosed" class="auth-sub" hidden>Регистрация закрыта — все участники в сборе.</p>
+    </div>
+  </div>
+
+  <!-- Приложение -->
+  <div id="app" hidden>
+    <header id="topbar">
+      <div class="logo">🗿 GIGACHAD</div>
+      <div id="scoreChips" class="score-chips"></div>
+    </header>
+
+    <main id="main"></main>
+
+    <button id="fab" title="Добавить">+</button>
+
+    <nav id="tabbar">
+      <button data-tab="today"><span>🏠</span>Сегодня</button>
+      <button data-tab="tasks"><span>✅</span>Задания<i id="tasksBadge" hidden></i></button>
+      <button data-tab="achs"><span>🏆</span>Ачивки</button>
+      <button data-tab="chat"><span>💬</span>Чат<i id="chatBadge" hidden></i></button>
+      <button data-tab="stats"><span>📊</span>Прогресс</button>
+    </nav>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div id="toastRoot"></div>
+  <div id="photoViewer" hidden><img alt=""></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/icons.js"></script>
+  <script src="/sound.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

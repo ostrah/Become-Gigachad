@@ -1,0 +1,20 @@
+{
+  "name": "tandem",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Тандем — соревновательный трекер развития для двоих: привычки, задания друг другу, лента дня, чат, очки и стрики",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.1",
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "multer": "^2.0.1",
+    "socket.io": "^4.8.1"
+  }
+}

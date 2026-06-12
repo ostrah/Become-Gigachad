@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- пиксельный моаи 🗿 -->
+  <rect width="16" height="16" fill="#151311"/>
+  <!-- силуэт головы -->
+  <rect x="4" y="1" width="8" height="14" fill="#7d8da0"/>
+  <rect x="3" y="2" width="1" height="12" fill="#5a6878"/>
+  <rect x="12" y="2" width="1" height="12" fill="#8fa2b6"/>
+  <!-- макушка -->
+  <rect x="4" y="1" width="8" height="1" fill="#9fb3c8"/>
+  <!-- бровь -->
+  <rect x="4" y="4" width="8" height="1" fill="#46525f"/>
+  <!-- глазницы -->
+  <rect x="4" y="5" width="3" height="1" fill="#5a6878"/>
+  <rect x="9" y="5" width="3" height="1" fill="#5a6878"/>
+  <!-- нос -->
+  <rect x="7" y="5" width="2" height="5" fill="#9fb3c8"/>
+  <rect x="6" y="10" width="4" height="1" fill="#46525f"/>
+  <!-- рот -->
+  <rect x="6" y="12" width="4" height="1" fill="#3a444f"/>
+  <!-- тень снизу -->
+  <rect x="4" y="14" width="8" height="1" fill="#46525f"/>
+</svg>
