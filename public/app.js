@@ -192,7 +192,6 @@ async function boot() {
   connectSocket();
   setTab('today');
   preloadChatBadge();
-  Slovak.load().catch(() => {});
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 
@@ -226,7 +225,6 @@ function setTab(tab) {
   if (tab === 'achs') loadAchs();
   if (tab === 'chat') openChat();
   if (tab === 'stats') loadStats();
-  if (tab === 'sk') Slovak.open();
 }
 document.querySelectorAll('#tabbar button').forEach((b) => b.addEventListener('click', () => setTab(b.dataset.tab)));
 
@@ -317,7 +315,6 @@ function renderToday() {
   d.checks.forEach((c) => feed.push({ at: c.at, icon: c.emoji, title: c.title, sub: `+${c.pts} очков` }));
   d.doneToday.forEach((t) => feed.push({ at: t.done_at, icon: '🎉', title: `Задача выполнена: ${t.title}`, sub: `+${t.pts} очков` }));
   (d.achEvents || []).forEach((e) => feed.push({ at: e.at, icon: '🏆', title: `Ачивка: ${e.title}`, sub: `+${e.pts} XP` }));
-  (d.skEvents || []).forEach((e) => feed.push({ at: e.at, icon: '🇸🇰', title: `Словацкий: ${e.title}`, sub: `+${e.pts} очков` }));
   d.posts.filter((p) => p.type !== 'report').forEach((p) => {
     const map = {
       meal: { icon: '🍽', title: 'Приём пищи', sub: p.kcal ? `~${p.kcal} ккал` : '' },

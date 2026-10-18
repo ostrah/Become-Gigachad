@@ -1,6 +1,6 @@
 /* BECOME GIGACHAD — service worker: офлайн-оболочка, network-first */
-const CACHE = 'gigachad-v3';
-const CORE = ['/', '/style.css', '/app.js', '/slovak.js', '/slovak-course.js', '/manifest.json', '/icon.svg'];
+const CACHE = 'gigachad-v2';
+const CORE = ['/', '/style.css', '/app.js', '/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

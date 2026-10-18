@@ -40,14 +40,6 @@ const INVITE = process.env.INVITE_CODE || '';
 const AI_KEY = process.env.ANTHROPIC_API_KEY || '';
 const AI_MODEL = process.env.AI_MODEL || 'claude-opus-4-8';
 
-/* ChatGPT (OpenAI) — репетитор словацкого */
-const OPENAI_KEY = process.env.OPENAI_API_KEY || '';
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
-const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts';
-const OPENAI_BASE = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
-const AI_DAILY_LIMIT = Number(process.env.AI_DAILY_LIMIT || 150);
-const SK = require('./public/slovak-course.js');
-
 let anthropic = null;
 if (AI_KEY) {
   const Anthropic = require('@anthropic-ai/sdk');
@@ -113,25 +105,6 @@ CREATE TABLE IF NOT EXISTS achs(
   winner_id INTEGER,
   created_at INTEGER
 );
-CREATE TABLE IF NOT EXISTS sk_progress(
-  user_id INTEGER, unit TEXT, best REAL DEFAULT 0, runs INTEGER DEFAULT 0,
-  done_at INTEGER, last_at INTEGER,
-  PRIMARY KEY(user_id, unit)
-);
-CREATE TABLE IF NOT EXISTS sk_cards(
-  user_id INTEGER, word TEXT, box INTEGER DEFAULT 0, due TEXT,
-  seen INTEGER DEFAULT 0, wrong INTEGER DEFAULT 0, last_at INTEGER,
-  PRIMARY KEY(user_id, word)
-);
-CREATE TABLE IF NOT EXISTS sk_events(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER, date TEXT, at INTEGER, pts INTEGER,
-  kind TEXT, title TEXT
-);
-CREATE TABLE IF NOT EXISTS sk_chat(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER, mode TEXT, role TEXT, content TEXT, at INTEGER
-);
 CREATE TABLE IF NOT EXISTS ach_events(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   ach_id INTEGER, user_id INTEGER,
@@ -183,8 +156,7 @@ function dayPts(uid, d) {
   const b = q.get('SELECT COALESCE(SUM(pts),0) s FROM posts WHERE user_id=? AND date=?', uid, d).s;
   const c = q.get(`SELECT COALESCE(SUM(pts),0) s FROM tasks WHERE assignee=? AND status='done' AND done_date=?`, uid, d).s;
   const e = q.get('SELECT COALESCE(SUM(pts),0) s FROM ach_events WHERE user_id=? AND date=?', uid, d).s;
-  const f = q.get('SELECT COALESCE(SUM(pts),0) s FROM sk_events WHERE user_id=? AND date=?', uid, d).s;
-  return a + b + c + e + f;
+  return a + b + c + e;
 }
 
 /* ---------- приложение ---------- */
@@ -302,7 +274,7 @@ async function aiAnalyze(kind, filePath, mime) {
 /* ---------- публичные руты ---------- */
 app.get('/api/config', (req, res) => {
   const count = q.get('SELECT COUNT(*) c FROM users').c;
-  res.json({ regOpen: count < MAX_USERS, needInvite: !!INVITE, ai: !!anthropic, tutor: !!OPENAI_KEY, users: count });
+  res.json({ regOpen: count < MAX_USERS, needInvite: !!INVITE, ai: !!anthropic, users: count });
 });
 
 const loginAttempts = new Map();
@@ -375,14 +347,13 @@ app.get('/api/day', auth, (req, res) => {
     ? q.all(`SELECT * FROM tasks WHERE assignee=? AND status='open' AND date<? ORDER BY date`, uid, d)
     : [];
   const achEvents = q.all('SELECT * FROM ach_events WHERE user_id=? AND date=? ORDER BY at', uid, d);
-  const skEvents = q.all('SELECT * FROM sk_events WHERE user_id=? AND date=? ORDER BY at', uid, d);
   const presence = q.get('SELECT first_at,last_at FROM presence WHERE user_id=? AND date=?', uid, d) || null;
   const kcal = q.get(`SELECT COALESCE(SUM(kcal),0) s FROM posts WHERE user_id=? AND date=? AND type='meal'`, uid, d).s;
   const weight = q.get(`SELECT weight FROM posts WHERE user_id=? AND type='weight' AND weight IS NOT NULL AND date<=? ORDER BY at DESC LIMIT 1`, uid, d)?.weight ?? null;
 
   res.json({
     user: publicUser(target), date: d, isToday: d === t, presence,
-    habits, checks, posts, tasks, doneToday, overdue, achEvents, skEvents,
+    habits, checks, posts, tasks, doneToday, overdue, achEvents,
     pts: dayPts(uid, d), kcal, weight,
   });
 });
@@ -733,8 +704,7 @@ app.get('/api/stats', auth, (req, res) => {
         UNION ALL SELECT date, pts FROM posts WHERE user_id=?
         UNION ALL SELECT done_date AS date, pts FROM tasks WHERE assignee=? AND status='done' AND done_date IS NOT NULL
         UNION ALL SELECT date, pts FROM ach_events WHERE user_id=?
-        UNION ALL SELECT date, pts FROM sk_events WHERE user_id=?
-      ) GROUP BY date`, u.id, u.id, u.id, u.id, u.id);
+      ) GROUP BY date`, u.id, u.id, u.id, u.id);
     const byDate = Object.fromEntries(ptsRows.map((r) => [r.date, r.p]));
     const reports = new Set(q.all(`SELECT date FROM posts WHERE user_id=? AND type='report'`, u.id).map((r) => r.date));
 
@@ -767,314 +737,6 @@ app.get('/api/stats', auth, (req, res) => {
   });
 
   res.json({ dates, users, monday });
-});
-
-/* ====================================================================
-   🇸🇰 СЛОВАЦКИЙ: курс, интервальное повторение, ИИ-репетитор (ChatGPT)
-==================================================================== */
-const SK_UNIT = new Map(SK.UNITS.map((u) => [u.id, u]));
-const SK_WORDS = new Map(); // слово (нижний регистр) → { sk, ru }
-for (const u of SK.UNITS) {
-  for (const [sk, ru] of u.words) if (!SK_WORDS.has(sk.toLowerCase())) SK_WORDS.set(sk.toLowerCase(), { sk, ru });
-}
-const SK_SCEN = new Map(SK.SCENARIOS.map((s) => [s.id, s]));
-/* коробки Лейтнера: через сколько дней показать слово снова */
-const SK_BOX_DAYS = [1, 1, 2, 4, 8, 16, 32, 64];
-const SK_PTS = { first: 30, repeat: 10, review: 10, chat: 10 };
-const SK_DAILY_CAP = 3; // сколько раз в день дают очки повтор урока / сессия повторения
-const daysFromToday = (n) => { const dt = new Date(); dt.setDate(dt.getDate() + n); return dt.toLocaleDateString('en-CA'); };
-const midnight = () => { const dt = new Date(); dt.setHours(0, 0, 0, 0); return dt.getTime(); };
-
-function skAward(uid, kind, pts, title) {
-  const d = todayStr();
-  q.run('INSERT INTO sk_events(user_id,date,at,pts,kind,title) VALUES(?,?,?,?,?,?)', uid, d, now(), pts, kind, title);
-  emitDay(uid, d, 'sk', `🇸🇰 ${title} · +${pts}`);
-}
-const skCountToday = (uid, kind) =>
-  q.get('SELECT COUNT(*) c FROM sk_events WHERE user_id=? AND date=? AND kind=?', uid, todayStr(), kind).c;
-
-/* ответ по слову: новое слово попадает в колоду, «созревшее» двигается по коробкам,
-   ошибка — обратно в начало. Досрочные верные ответы коробку не повышают. */
-function skCard(uid, word, ok) {
-  const w = SK_WORDS.get(String(word || '').toLowerCase());
-  if (!w) return;
-  const d = todayStr(), t = now();
-  const c = q.get('SELECT * FROM sk_cards WHERE user_id=? AND word=?', uid, w.sk);
-  if (!c) {
-    const box = ok ? 1 : 0;
-    q.run('INSERT INTO sk_cards(user_id,word,box,due,seen,wrong,last_at) VALUES(?,?,?,?,1,?,?)',
-      uid, w.sk, box, daysFromToday(SK_BOX_DAYS[box]), ok ? 0 : 1, t);
-    return;
-  }
-  let { box, due } = c;
-  if (!ok) { box = 0; due = daysFromToday(SK_BOX_DAYS[0]); }
-  else if (c.due <= d) { box = Math.min(box + 1, SK_BOX_DAYS.length - 1); due = daysFromToday(SK_BOX_DAYS[box]); }
-  q.run('UPDATE sk_cards SET box=?,due=?,seen=seen+1,wrong=wrong+?,last_at=? WHERE user_id=? AND word=?',
-    box, due, ok ? 0 : 1, t, uid, w.sk);
-}
-
-app.get('/api/sk/state', auth, (req, res) => {
-  const uid = req.user.id, d = todayStr();
-  const cards = q.get('SELECT COUNT(*) c, COALESCE(SUM(box>=4),0) strong FROM sk_cards WHERE user_id=?', uid);
-  res.json({
-    progress: q.all('SELECT unit,best,runs,done_at FROM sk_progress WHERE user_id=?', uid),
-    words: cards.c, strong: cards.strong,
-    due: q.get('SELECT COUNT(*) c FROM sk_cards WHERE user_id=? AND due<=?', uid, d).c,
-    todayPts: q.get('SELECT COALESCE(SUM(pts),0) s FROM sk_events WHERE user_id=? AND date=?', uid, d).s,
-    tutor: !!OPENAI_KEY,
-  });
-});
-
-app.post('/api/sk/lesson', auth, (req, res) => {
-  const b = req.body || {};
-  const u = SK_UNIT.get(b.unit);
-  if (!u) return bad(res, 'Нет такой темы');
-  const total = Math.round(Number(b.total)), correct = Math.round(Number(b.correct));
-  if (!(total >= 5 && total <= 60) || !(correct >= 0 && correct <= total)) return bad(res, 'Странный результат урока');
-  const uid = req.user.id, t = now(), score = correct / total;
-  for (const r of (Array.isArray(b.words) ? b.words.slice(0, 80) : [])) skCard(uid, r && r.sk, !!(r && r.ok));
-
-  const passed = score >= SK.PASS;
-  const p = q.get('SELECT * FROM sk_progress WHERE user_id=? AND unit=?', uid, u.id);
-  const firstPass = passed && !(p && p.done_at);
-  if (!p) {
-    q.run('INSERT INTO sk_progress(user_id,unit,best,runs,done_at,last_at) VALUES(?,?,?,1,?,?)', uid, u.id, score, passed ? t : null, t);
-  } else {
-    q.run('UPDATE sk_progress SET best=MAX(best,?), runs=runs+1, done_at=COALESCE(done_at,?), last_at=? WHERE user_id=? AND unit=?',
-      score, passed ? t : null, t, uid, u.id);
-  }
-
-  let pts = 0;
-  if (firstPass) pts = SK_PTS.first;
-  else if (passed && skCountToday(uid, 'lesson') < SK_DAILY_CAP) pts = SK_PTS.repeat;
-  if (pts) skAward(uid, 'lesson', pts, `${firstPass ? 'пройдена тема' : 'урок'} «${u.title}» ${correct}/${total}`);
-  res.json({ passed, firstPass, pts, score });
-});
-
-app.get('/api/sk/review', auth, (req, res) => {
-  const uid = req.user.id;
-  let rows = q.all('SELECT word,box FROM sk_cards WHERE user_id=? AND due<=? ORDER BY box, due LIMIT 20', uid, todayStr());
-  const extra = !rows.length && req.query.extra === '1';
-  if (extra) rows = q.all('SELECT word,box FROM sk_cards WHERE user_id=? ORDER BY box, wrong DESC, last_at LIMIT 15', uid);
-  const cards = rows.map((r) => ({ sk: r.word, ru: SK_WORDS.get(r.word.toLowerCase())?.ru, box: r.box })).filter((c) => c.ru);
-  res.json({ cards, extra });
-});
-
-app.post('/api/sk/review', auth, (req, res) => {
-  const results = Array.isArray(req.body && req.body.results) ? req.body.results.slice(0, 40) : [];
-  const uid = req.user.id;
-  for (const r of results) skCard(uid, r && r.sk, !!(r && r.ok));
-  const ok = results.filter((r) => r && r.ok).length;
-  let pts = 0;
-  if (results.length >= 5 && skCountToday(uid, 'review') < SK_DAILY_CAP) {
-    pts = SK_PTS.review;
-    skAward(uid, 'review', pts, `повторение слов ${ok}/${results.length}`);
-  }
-  res.json({ pts });
-});
-
-/* --- ChatGPT --- */
-const aiUsage = new Map(); // "uid:дата" → число запросов
-function aiAllowed(uid) {
-  const k = `${uid}:${todayStr()}`;
-  const n = (aiUsage.get(k) || 0) + 1;
-  aiUsage.set(k, n);
-  return n <= AI_DAILY_LIMIT;
-}
-
-async function openaiFetch(endpoint, body) {
-  const r = await fetch(`${OPENAI_BASE}${endpoint}`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${OPENAI_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(60000),
-  });
-  if (!r.ok) {
-    const j = await r.json().catch(() => null);
-    const err = new Error((j && j.error && j.error.message) || `HTTP ${r.status}`);
-    err.status = r.status;
-    throw err;
-  }
-  return r;
-}
-
-async function openaiChat(messages, { json = false, maxTokens = 1500 } = {}) {
-  const r = await openaiFetch('/chat/completions', {
-    model: OPENAI_MODEL, messages, max_completion_tokens: maxTokens,
-    ...(json ? { response_format: { type: 'json_object' } } : {}),
-  });
-  const j = await r.json();
-  return (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || '';
-}
-
-function aiError(e) {
-  if (e.status === 401) return 'ChatGPT: неверный OPENAI_API_KEY';
-  if (e.status === 429) return 'ChatGPT: превышен лимит запросов или закончился баланс OpenAI';
-  if (e.status === 404) return `ChatGPT: модель «${OPENAI_MODEL}» недоступна — поменяй OPENAI_MODEL`;
-  if (e.name === 'TimeoutError') return 'ChatGPT долго не отвечает, попробуй ещё раз';
-  return 'ChatGPT: ' + e.message;
-}
-
-function skLevel(uid) {
-  const done = q.all('SELECT unit FROM sk_progress WHERE user_id=? AND done_at IS NOT NULL', uid)
-    .map((r) => SK_UNIT.get(r.unit)).filter(Boolean);
-  const words = q.get('SELECT COUNT(*) c FROM sk_cards WHERE user_id=?', uid).c;
-  const n = done.length;
-  const level = n < 3 ? 'A0 — абсолютный новичок, знает считанные слова'
-    : n < 8 ? 'A0+ — знает базовые фразы, приветствия, числа, семью, еду'
-    : n < 13 ? 'A1 — элементарный, строит простые предложения в настоящем времени'
-    : 'A1+ — уверенный начальный, знает прошедшее и будущее время';
-  return { level, topics: done.map((u) => u.title).join('; ') || 'пока ни одной', words };
-}
-
-const skMode = (m) => (m === 'free' || m === 'grammar' || (typeof m === 'string' && m.startsWith('role:') && SK_SCEN.has(m.slice(5))) ? m : null);
-
-function skSystemPrompt(uid, mode) {
-  const { level, topics, words } = skLevel(uid);
-  let modeText;
-  if (mode === 'grammar') {
-    modeText = 'Режим «Вопросы»: ученик спрашивает про словацкий язык (грамматика, слова, произношение, «как сказать…»). '
-      + 'В поле ru отвечай по-русски понятно и коротко (до ~120 слов), с примерами. '
-      + 'В поле sk положи 1–3 коротких примера по-словацки к ответу (каждый с новой строки) или пустую строку.';
-  } else if (mode === 'free') {
-    modeText = 'Режим «Разговор»: веди простую беседу на бытовые темы — день ученика, семья, еда, работа, хобби, планы, Словакия. '
-      + 'Задавай один вопрос за раз и заканчивай реплику вопросом, чтобы разговор продолжался.';
-  } else {
-    const sc = SK_SCEN.get(mode.slice(5));
-    modeText = `Режим «Сценка» (${sc.title}): ролевая игра. Ты — ${sc.role}. `
-      + 'Оставайся в роли и говори как настоящий словак в этой ситуации, но просто. Двигай сценку вперёд и заканчивай репликой, на которую нужно ответить. '
-      + 'Когда сценка естественно завершится — поздравь ученика в поле tip и предложи сыграть ещё раз.';
-  }
-  return `Ты — дружелюбный и терпеливый репетитор словацкого языка. Ученик русскоязычный и учит словацкий с нуля.
-Уровень ученика: ${level}. Пройденные темы курса: ${topics}. Слов в его словаре: ${words}.
-
-${modeText}
-
-Общие правила:
-- Пиши по-словацки грамотно, с правильной диакритикой (č š ž ť ď ň ľ ĺ ŕ ä ô á é í ó ú ý).
-- Подстраивайся под уровень: короткие простые предложения (1–3), базовая лексика; сложнее — только если ученик сам пишет сложнее.
-- Если в последнем сообщении ученика есть ошибки (грамматика, падежи, род, диакритика, порядок слов, не то слово) — перечисли их в fixes. Заглавные буквы и точку в конце не исправляй.
-- Если ученик пишет по-русски — не ругай, а в fixes покажи, как сказать это по-словацки (wrong — его фраза, right — словацкий вариант).
-- Будь кратким и тёплым. Без markdown.
-
-Отвечай строго JSON-объектом:
-{"sk": "твоя реплика по-словацки", "ru": "перевод реплики на русский", "fixes": [{"wrong": "...", "right": "...", "note": "короткое объяснение по-русски"}], "tip": "одна короткая подсказка по-русски (полезное слово или конструкция) или пустая строка"}`;
-}
-
-function skParseReply(raw) {
-  let j = null;
-  try { j = JSON.parse(raw); } catch {}
-  if (!j || typeof j !== 'object') return { sk: '', ru: String(raw || '').slice(0, 3000), fixes: [], tip: '' };
-  const str = (v, n) => (typeof v === 'string' ? v.trim().slice(0, n) : '');
-  return {
-    sk: str(j.sk, 2000),
-    ru: str(j.ru, 3000),
-    fixes: (Array.isArray(j.fixes) ? j.fixes : []).slice(0, 8)
-      .map((f) => ({ wrong: str(f && f.wrong, 300), right: str(f && f.right, 300), note: str(f && f.note, 400) }))
-      .filter((f) => f.right),
-    tip: str(j.tip, 500),
-  };
-}
-
-app.get('/api/sk/chat', auth, (req, res) => {
-  const mode = skMode(req.query.mode);
-  if (!mode) return bad(res, 'Неизвестный режим');
-  const rows = q.all('SELECT id,role,content,at FROM sk_chat WHERE user_id=? AND mode=? ORDER BY id DESC LIMIT 60', req.user.id, mode);
-  res.json({ messages: rows.reverse() });
-});
-
-app.delete('/api/sk/chat', auth, (req, res) => {
-  const mode = skMode(req.query.mode);
-  if (!mode) return bad(res, 'Неизвестный режим');
-  q.run('DELETE FROM sk_chat WHERE user_id=? AND mode=?', req.user.id, mode);
-  res.json({ ok: true });
-});
-
-app.post('/api/sk/chat', auth, async (req, res) => {
-  if (!OPENAI_KEY) return bad(res, 'Репетитор выключен: на сервере не задан OPENAI_API_KEY', 503);
-  const b = req.body || {};
-  const mode = skMode(b.mode);
-  if (!mode) return bad(res, 'Неизвестный режим');
-  const uid = req.user.id;
-  const start = !!b.start;
-  const text = String(b.text || '').trim().slice(0, 1000);
-  if (!start && !text) return bad(res, 'Пустое сообщение');
-  if (!aiAllowed(uid)) return bad(res, `Дневной лимит ИИ (${AI_DAILY_LIMIT} запросов) исчерпан — продолжим завтра`, 429);
-
-  let user = null;
-  if (text) {
-    const r = q.run('INSERT INTO sk_chat(user_id,mode,role,content,at) VALUES(?,?,?,?,?)', uid, mode, 'user', text, now());
-    user = q.get('SELECT id,role,content,at FROM sk_chat WHERE id=?', Number(r.lastInsertRowid));
-    const n = q.get(`SELECT COUNT(*) c FROM sk_chat WHERE user_id=? AND role='user' AND at>=?`, uid, midnight()).c;
-    if (n >= 5 && !skCountToday(uid, 'chat')) skAward(uid, 'chat', SK_PTS.chat, 'разговор с ИИ-репетитором');
-  }
-  const history = q.all('SELECT role,content FROM sk_chat WHERE user_id=? AND mode=? ORDER BY id DESC LIMIT 20', uid, mode).reverse();
-  const messages = [{ role: 'system', content: skSystemPrompt(uid, mode) }, ...history.map((m) => ({ role: m.role, content: m.content }))];
-  if (!text) messages.push({ role: 'user', content: '(Ученик открыл чат. Начни первым: поздоровайся и задай первый вопрос или начни сценку.)' });
-
-  try {
-    const reply = skParseReply(await openaiChat(messages, { json: true }));
-    const r = q.run('INSERT INTO sk_chat(user_id,mode,role,content,at) VALUES(?,?,?,?,?)', uid, mode, 'assistant', JSON.stringify(reply), now());
-    res.json({ user, reply: q.get('SELECT id,role,content,at FROM sk_chat WHERE id=?', Number(r.lastInsertRowid)) });
-  } catch (e) {
-    console.error('OpenAI chat:', e.message);
-    bad(res, aiError(e), 502);
-  }
-});
-
-app.post('/api/sk/explain', auth, async (req, res) => {
-  if (!OPENAI_KEY) return bad(res, 'ИИ выключен: на сервере не задан OPENAI_API_KEY', 503);
-  const b = req.body || {};
-  const s = (v) => String(v || '').trim().slice(0, 400);
-  if (!s(b.expected)) return bad(res, 'Нечего объяснять');
-  if (!aiAllowed(req.user.id)) return bad(res, `Дневной лимит ИИ (${AI_DAILY_LIMIT} запросов) исчерпан`, 429);
-  try {
-    const text = await openaiChat([
-      { role: 'system', content: 'Ты — репетитор словацкого для русскоязычного новичка. Коротко (2–5 предложений, без markdown) объясни по-русски, почему правильный ответ именно такой и в чём ошибка ученика. Если уместно — дай правило или мнемонику.' },
-      { role: 'user', content: `Задание: ${s(b.task)}\nПравильный ответ: ${s(b.expected)}\nОтвет ученика: ${s(b.given) || '(нет ответа)'}` },
-    ], { maxTokens: 800 });
-    res.json({ text: text.trim().slice(0, 2000) });
-  } catch (e) {
-    console.error('OpenAI explain:', e.message);
-    bad(res, aiError(e), 502);
-  }
-});
-
-/* озвучка: OpenAI TTS, mp3 кэшируется на диске — каждая фраза оплачивается один раз */
-const TTS_DIR = path.join(DATA, 'tts');
-fs.mkdirSync(TTS_DIR, { recursive: true });
-const ttsInflight = new Map();
-
-async function skTts(text, file) {
-  const body = { model: OPENAI_TTS_MODEL, voice: 'alloy', input: text, response_format: 'mp3' };
-  if (OPENAI_TTS_MODEL.includes('gpt-4o')) {
-    body.instructions = 'Speak Slovak like a native speaker from Bratislava: clearly, slowly and distinctly, for a beginner learner.';
-  }
-  const r = await openaiFetch('/audio/speech', body);
-  const tmp = file + '.' + crypto.randomUUID() + '.tmp';
-  fs.writeFileSync(tmp, Buffer.from(await r.arrayBuffer()));
-  fs.renameSync(tmp, file);
-}
-
-app.get('/api/sk/tts', auth, async (req, res) => {
-  if (!OPENAI_KEY) return bad(res, 'Озвучка выключена: нет OPENAI_API_KEY', 503);
-  const text = String(req.query.text || '').trim().slice(0, 400);
-  if (!text) return bad(res, 'Пустой текст');
-  const file = path.join(TTS_DIR, crypto.createHash('sha1').update(OPENAI_TTS_MODEL + '|' + text).digest('hex') + '.mp3');
-  if (!fs.existsSync(file)) {
-    let p = ttsInflight.get(file);
-    if (!p) {
-      if (!aiAllowed(req.user.id)) return bad(res, `Дневной лимит ИИ (${AI_DAILY_LIMIT} запросов) исчерпан`, 429);
-      p = skTts(text, file).finally(() => ttsInflight.delete(file));
-      ttsInflight.set(file, p);
-    }
-    try { await p; } catch (e) {
-      console.error('OpenAI TTS:', e.message);
-      return bad(res, aiError(e), 502);
-    }
-  }
-  res.setHeader('Cache-Control', 'private, max-age=31536000, immutable');
-  res.type('audio/mpeg').sendFile(file);
 });
 
 /* --- фото (только для своих) --- */
@@ -1128,5 +790,4 @@ server.listen(PORT, HOST, () => {
   console.log(`🗿 BECOME GIGACHAD — LIVE EDITION: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
   console.log(`   База: ${path.join(DATA, 'tandem.db')}`);
   console.log(`   ИИ-анализ фото: ${anthropic ? `включён (${AI_MODEL})` : 'выключен (нет ANTHROPIC_API_KEY)'}`);
-  console.log(`   🇸🇰 ChatGPT-репетитор: ${OPENAI_KEY ? `включён (${OPENAI_MODEL}, озвучка ${OPENAI_TTS_MODEL})` : 'выключен (нет OPENAI_API_KEY)'}`);
 });
